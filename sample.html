@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>使用者資訊表單</title>
+  <style>
+    /* 簡潔、現代的表單樣式 */
+    :root{
+      --bg:#f7f8fa;
+      --card:#ffffff;
+      --accent:#556bff;
+      --muted:#6b7280;
+      --radius:12px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans TC", "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+    body{
+      background:var(--bg);
+      padding:32px;
+      display:flex;
+      justify-content:center;
+      align-items:flex-start;
+      min-height:100vh;
+      color:#111827;
+    }
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow: 0 6px 24px rgba(16,24,40,0.08);
+      padding:24px;
+      width:100%;
+      max-width:760px;
+    }
+    h1{ margin:0 0 12px 0; font-size:20px; }
+    p.lead{ margin:0 0 18px 0; color:var(--muted); }
+    form.grid{ display:grid; grid-template-columns: 220px 1fr; gap:16px 20px; align-items:start; }
+    label{ display:block; font-size:14px; margin-bottom:6px; }
+    .field{ margin-bottom:12px; }
+    input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea{
+      width:100%;
+      box-sizing:border-box;
+      padding:10px 12px;
+      border:1px solid #e6e9ef;
+      border-radius:8px;
+      font-size:14px;
+      outline:none;
+    }
+    textarea{ min-height:110px; resize:vertical; }
+    .avatar-col{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      align-items:center;
+    }
+    .avatar-preview{
+      width:160px;
+      height:160px;
+      border-radius:12px;
+      background:linear-gradient(180deg,#f0f2ff,#ffffff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:1px dashed #e6e9ef;
+    }
+    .avatar-preview img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .btn{
+      background:var(--accent);
+      color:white;
+      border:none;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .muted{ color:var(--muted); font-size:13px; }
+    .actions{ grid-column: 1 / -1; display:flex; gap:10px; justify-content:flex-end; margin-top:6px; }
+    .error{ color:#dc2626; font-size:13px; margin-top:6px; }
+    @media (max-width:700px){
+      form.grid{ grid-template-columns: 1fr; }
+      .actions{ justify-content:flex-start; }
+    }
+  </style>
+</head>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>課程選單（必修與選修）</title>
+  <style>
+    body {
+      font-family: "Microsoft JhengHei", sans-serif;
+      padding: 20px;
+      background: #f7f8fa;
+    }
+    .form-card {
+      background: #fff;
+      padding: 24px;
+      border-radius: 12px;
+      max-width: 700px;
+      margin: auto;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+    }
+    label { font-weight: bold; display: block; margin-top: 16px; }
+    select {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 6px;
+      font-size: 14px;
+    }
+    h3 { margin-top: 32px; }
+  </style>
+</head>
+
+<body>
+  <main class="card" aria-labelledby="title">
+    <h1 id="title">使用者資訊</h1>
+    <p class="lead">請填寫下列欄位。電話欄位僅接受數字（最多 10 位）。上傳大頭貼後會即時顯示預覽。</p>
+
+    <form id="userForm" class="grid" novalidate>
+      <!-- 左側：Avatar -->
+      <div class="avatar-col" aria-hidden="false">
+        <div class="avatar-preview" id="avatarPreview" role="img" aria-label="大頭貼預覽">
+          <!-- 預設示意圖（SVG） -->
+          <svg id="avatarPlaceholder" width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect width="24" height="24" rx="4" fill="#eef2ff"/>
+            <path d="M12 12a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM4 20a8 8 0 0 1 16 0" stroke="#a5b4fc" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:6px;align-items:center;">
+          <label for="avatar" class="muted">上傳大頭貼 (圖片檔)</label>
+          <input id="avatar" name="avatar" type="file" accept="image/*" aria-describedby="avatarHelp">
+          <div id="avatarHelp" class="muted" style="font-size:12px;">支援 png / jpg 等常見格式。上限示意：5MB（實作時可限制）。</div>
+        </div>
+      </div>
+
+      <!-- 右側：其他欄位 -->
+      <div style="min-width:0;">
+        <!-- 姓名 -->
+        <div class="field">
+          <label for="fullname">姓名</label>
+          <input id="fullname" name="fullname" type="text" placeholder="請輸入姓名" autocomplete="name" />
+        </div>
+
+        <!-- email -->
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="example@domain.com" autocomplete="email" />
+        </div>
+
+        <!-- 學號 -->
+        <div class="field">
+          <label for="stuid">學號</label>
+          <input id="stuid" name="stuid" type="text" placeholder="請輸入學號" />
+        </div>
+
+        <!-- 密碼（不明碼顯示） -->
+        <div class="field">
+          <label for="password">密碼</label>
+          <input id="password" name="password" type="password" placeholder="請輸入密碼" autocomplete="new-password" />
+          <div class="muted" style="margin-top:6px;">密碼輸入為隱藏（不以明碼顯示）。</div>
+        </div>
+
+        <!-- 註記 -->
+        <div class="field">
+          <label for="remark">註記</label>
+          <textarea id="remark" name="remark" placeholder="可多行輸入備註"></textarea>
+        </div>
+
+        <!-- 聯絡電話 -->
+        <div class="field">
+          <label for="phone">聯絡電話</label>
+          <input id="phone" name="phone" type="tel"
+                 inputmode="numeric"
+                 pattern="\d{1,10}"
+                 maxlength="10"
+                 placeholder="最多 10 位數（僅數字）"
+                 aria-describedby="phoneHelp"
+                 />
+          <div id="phoneHelp" class="muted">僅允許數字，最多 10 位。</div>
+          <div id="phoneError" class="error" style="display:none;"></div>
+        </div>
+
+      </div>
+
+      <!-- 按鈕列 -->
+      <div class="actions">
+        <button type="reset" class="btn" style="background:#374151">重設</button>
+        <button type="submit" class="btn">送出</button>
+      </div>
+
+    </form>
+  </main>
+
+  <div class="form-card">
+    <h2>課程選擇表單</h2>
+
+    <!-- 必修課程 -->
+    <h3>必修課程</h3>
+    <form>
+      <label for="compulsory">選擇必修課程</label>
+      <select id="compulsory" name="compulsory">
+        <optgroup label="資工系1A">
+          <option value="981">981 微積分甲〈一〉</option>
+          <option value="982">982 計算機概論</option>
+          <option value="983">983 C程式設計</option>
+          <option value="984">984 離散數學</option>
+        </optgroup>
+        <optgroup label="資工系1B">
+          <option value="985">985 微積分甲〈一〉</option>
+          <option value="986">986 計算機概論</option>
+          <option value="987">987 C程式設計</option>
+          <option value="988">988 離散數學</option>
+        </optgroup>
+        <optgroup label="資工系2A">
+          <option value="993">993 線性代數</option>
+          <option value="994">994 物件導向分析與設計</option>
+        </optgroup>
+        <optgroup label="資工系2B">
+          <option value="995">995 邏輯設計</option>
+          <option value="996">996 邏輯設計實驗</option>
+          <option value="997">997 資料結構</option>
+          <option value="998">998 機器學習導論</option>
+          <option value="999">999 物件導向分析與設計</option>
+        </optgroup>
+        <optgroup label="資工系4">
+          <option value="1012">1012 專題實作</option>
+          <option value="1013">1013 專題實作</option>
+        </optgroup>
+      </select>
+
+      <!-- 選修課程 -->
+      <h3>選修課程</h3>
+      <label for="elective">選擇選修課程</label>
+      <select id="elective" name="elective">
+        <optgroup label="資工系2-4">
+          <option value="1014">1014 電子電路學</option>
+          <option value="1015">1015 電子電路學實驗</option>
+          <option value="1016">1016 組合語言</option>
+          <option value="1017">1017 自然語言處理</option>
+          <option value="1026">1026 WEB程式設計</option>
+          <option value="1027">1027 Linux作業系統</option>
+          <option value="1028">1028 JAVA程式設計</option>
+          <option value="1029">1029 程式設計檢定</option>
+        </optgroup>
+        <optgroup label="資工系3,4">
+          <option value="1018">1018 物聯網與感測</option>
+          <option value="1019">1019 深度學習</option>
+          <option value="1020">1020 統計軟體實作</option>
+          <option value="1021">1021 軟體工程（二）</option>
+          <option value="1022">1022 AIOT應用開發</option>
+          <option value="1023">1023 AIOT應用實務</option>
+          <option value="1024">1024 軟體專案管理</option>
+          <option value="1025">1025 自由開源軟體</option>
+        </optgroup>
+      </select>
+
+      <button type="submit" style="margin-top:20px; padding:10px 16px; border:none; background:#556bff; color:white; border-radius:8px;">送出</button>
+    </form>
+  </div>
+
+
+
+
+
+
+
+
+
+</body>
+</html>
